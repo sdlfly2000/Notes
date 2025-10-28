@@ -9,7 +9,7 @@ openssl genrsa -out server.key 2048
 
 # Create san.cnf
 
-'''
+```
 ini
 [req]
 default_md = sha256
@@ -27,7 +27,7 @@ DNS.1 = example.com
 DNS.2 = www.example.com
 DNS.3 = api.example.com
 IP.1 = 127.0.0.1
-'''
+```
 
 # Generate server csr with san.cnf
 openssl req -new -nodes -key server.key -sha256 -out server.csr -config san.cnf

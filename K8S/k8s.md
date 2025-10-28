@@ -1,32 +1,52 @@
-172.26.132.197 	master
-172.26.128.242	node1
-172.26.130.29	node2
+# K8S Installation and Setup
 
-sudo apt install selinux-utils
+## VM Node Preparation
+
+### Setup IP and hosts
+- 172.26.132.197 	-> control plane (mater)
+- 172.26.128.242 	->	node1
+- 172.26.130.29 	->	node2
+
+### Disable swap
+```
+sudo apt install selinux-utils -> Note: Maybe not need
 
 sudo swapoff -a
+```
+### Docker Installation
 
-https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.4/cri-dockerd-0.3.4.amd64.tgz
+TBD
 
-sudo tar xf cri-dockerd-0.3.4.amd64.tgz && sudo mv cri-dockerd/cri-dockerd /usr/local/bin/
+### CRI Installation
+1. Download CRI [Link](https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.4/cri-dockerd-0.3.4.amd64.tgz)
 
-https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.service
-https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.socket
+2. Extract CRI to bin folder
 
-sudo install -o root -g root -m 0755 cri-dockerd /usr/local/bin/cri-dockerd
-sudo install cri-docker.service /etc/systemd/system
-sudo install cri-docker.socket /etc/systemd/system
-sudo sed -i -e 's,/usr/bin/cri-dockerd,/usr/local/bin/cri-dockerd,' /etc/systemd/system/cri-docker.service
-sudo systemctl daemon-reload
-sudo systemctl enable --now cri-docker.socket
+	```
+	sudo tar xf cri-dockerd-0.3.4.amd64.tgz && sudo mv cri-dockerd/cri-dockerd /usr/local/bin/
+	```
+3. Download [Service](https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.service) and [Socket](https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.socket)
 
-## Maybe not needed
-sudo /usr/local/bin/cri-dockerd --container-runtime-endpoint fd:// --pod-infra-container-image=registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.10
+4. Deploy CRI
+	```
+	sudo install -o root -g root -m 0755 cri-dockerd /usr/local/bin/cri-dockerd
+
+	sudo install cri-docker.service /etc/systemd/system
+	sudo install cri-docker.socket /etc/systemd/system
+
+	sudo sed -i -e 's,/usr/bin/cri-dockerd,/usr/local/bin/cri-dockerd,' /etc/systemd/system/cri-docker.service
+
+	sudo systemctl daemon-reload
+	sudo systemctl enable --now cri-docker.socket
+	```
+5. Running CRI
+	```
+	sudo /usr/local/bin/cri-dockerd --container-runtime-endpoint fd:// --pod-infra-container-image=registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.10
+	```
 
 ghcr.io/flannel-io/flannel-cni-plugin:v1.7.1-flannel1
 ghcr.io/flannel-io/flannel:v0.27.0
 
-export KUBECONFIG=/etc/kubernetes/admin.conf
 
 sudo kubeadm init --control-plane-endpoint=homeserver2:6443 --image-repository=registry.aliyuncs.com/google_containers --cri-socket=unix:///var/run/cri-dockerd.sock --pod-network-cidr=10.244.0.0/16
 

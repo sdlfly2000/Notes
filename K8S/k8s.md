@@ -102,6 +102,8 @@ kubectl create secret tls rabbitmq-tls --key default-server-certificate.key --ce
 ## Create cert and key
 sudo openssl req -x509 -newkey rsa:4096 -keyout default-server-certificate.key -out default-server-certificate.crt -sha256 -days 3650 -nodes -subj "/C=CN/ST=SH/L=CityName/O=Activator/OU=Activator.Traefik/CN=activator.com" -addext "subjectAltName=DNS:traefik.activator.com,DNS:monitor-log.activator.com,DNS:rabbitmq.activator.com,DNS:registry.activator.com,DNS:k8s-dashboard.activator.com"
 
+sudo openssl ca -in apm-server-certificate.csr -out apm-server-certificate.crt -outdir ./output -keyfile default-server-certificate.key -cert default-server-certificate.crt -days +365
+
 ------------------
 ## Install Ingress Controller
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.13.3/deploy/static/provider/cloud/deploy.yaml

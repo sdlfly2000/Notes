@@ -170,7 +170,7 @@ sudo openssl s_client -showcerts -connect registry.activator.com:443
 ```
 sudo cp default-server-certificate.crt /usr/local/share/ca-certificates/default-server-certificate.crt
 
-sudo update-ca-ccertificates
+sudo update-ca-certificates
 
 sudo cp default-server-certificate.crt /etc/docker/certs.d/registry.activator.com:443/ca.crt
 

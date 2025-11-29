@@ -78,7 +78,7 @@ sudo kubeadm token create --print-join-command
 
 ### Join cluster from worker node
 ```
-sudo kubeadm join homeserver2:6443 --token 05ct66.xfz2a57ndlpqh7vu --discovery-token-ca-cert-hash sha256:4e52a1583b76789f37a28dbfc124612b6a4aaf513dcc8667f365e6f67feab16d --cri-socket=unix:///var/run/cri-dockerd.sock
+sudo kubeadm join homeserver2:6443 --token jsvi0r.9adueclcau77mzm4 --discovery-token-ca-cert-hash sha256:ebe934d30809fa4f057544fb8398f6783c6b03bbc11dbe96931967d2ad71c260 --cri-socket=unix:///var/run/cri-dockerd.sock
 ```
 ### For non-root user executing Kubectl
 ```

@@ -37,7 +37,7 @@ sudo apt-get install kubeadm kubectl kubelet
 2. Extract CRI (cri-dockerd-0.3.4.amd64.tgz) to bin folder
 
 	```
-	sudo tar xf cri-dockerd-0.3.4.amd64.tgz && sudo mv cri-dockerd/cri-dockerd /usr/local/bin/
+	sudo tar xf cri-dockerd-0.3.21.amd64.tgz && sudo mv cri-dockerd/cri-dockerd /usr/local/bin/
 
 	sudo install -o root -g root -m 0755 cri-dockerd /usr/local/bin/cri-dockerd --> No need maybe
 	```
@@ -78,7 +78,7 @@ sudo kubeadm token create --print-join-command
 
 ### Join cluster from worker node
 ```
-sudo kubeadm join homeserver2:6443 --token jsvi0r.9adueclcau77mzm4 --discovery-token-ca-cert-hash sha256:ebe934d30809fa4f057544fb8398f6783c6b03bbc11dbe96931967d2ad71c260 --cri-socket=unix:///var/run/cri-dockerd.sock
+sudo kubeadm join homeserver2:6443 --token eugl22.ynr4q1fresbcx4mb --discovery-token-ca-cert-hash sha256:f8360f0a83cd050adf8e431b7df22cb11b983be0b45e24305be997abfdc67496 --cri-socket=unix:///var/run/cri-dockerd.sock
 ```
 ### For non-root user executing Kubectl
 ```
@@ -133,6 +133,37 @@ kubectl -n kubernetes-dashboard create token admin-user
 Powershell: 
 ssh -t sdlfly2000@homeserver2 'kubectl -n kubernetes-dashboard create token admin-user'
 ```
+
+## Install HeadLamp [Instruction](https://headlamp.dev/docs/latest/installation/)
+1. Create a Service Account:
+```
+kubectl -n kube-system create serviceaccount headlamp-admin
+```
+2. Give admin rights to the account:
+```
+kubectl create clusterrolebinding headlamp-admin --serviceaccount=kube-system:headlamp-admin --clusterrole=cluster-admin
+```
+
+3. Create the token using the following command:
+```
+kubectl create token headlamp-admin -n kube-system
+```
+
+Powershell: 
+```
+ssh -t sdlfly2000@homeserver2 'kubectl create token headlamp-admin -n kube-system'
+```
+
+4. Installation
+```
+kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/headlamp/main/kubernetes-headlamp.yaml
+```
+
+5. Ingress
+```
+https://raw.githubusercontent.com/kubernetes-sigs/headlamp/main/kubernetes-headlamp-ingress-sample.yaml
+```
+
 # Troubleshooting
 ## In case, pod kube-flannel-ds not working, on node run
 ```

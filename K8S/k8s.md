@@ -126,12 +126,17 @@ helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
 helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
 ```
 ## Create Dashboard Token
+### Linux - Dashboard:
 ```
-Linux:
 kubectl -n kubernetes-dashboard create token admin-user
-
-Powershell: 
+```
+### Powershell - Dashboard: 
+```
 ssh -t sdlfly2000@homeserver2 'kubectl -n kubernetes-dashboard create token admin-user'
+```
+### Powershell - Headlamp: 
+```
+ssh -t sdlfly2000@homeserver2 'kubectl create token headlamp-admin -n kube-system'
 ```
 
 ## Install HeadLamp [Instruction](https://headlamp.dev/docs/latest/installation/)

@@ -296,3 +296,29 @@ server {
 	}
 }
 ```
+
+# Upgrade K8S Cluster
+> Note: Upgrade version only by minor version step by step
+
+## Apt Reference [link](https://v1-35.docs.kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
+
+```shell
+sudo apt-get update
+
+sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
+
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.35/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list
+
+sudo apt-get update
+```
+
+## Upgrade K8S
+### [Control Plane](https://v1-35.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/#upgrading-control-plane-nodes)
+
+### [Worker node](https://v1-35.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/upgrading-linux-nodes/#upgrading-worker-nodes) 
